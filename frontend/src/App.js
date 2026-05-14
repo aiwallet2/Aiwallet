@@ -113,7 +113,7 @@ function App() {
   async function analyzeTransaction() {
     try {
       const response = await fetch(
-        "http://127.0.0.1:3001/parse",
+        "https://aiwallet-a4mv.onrender.com/parse",
         {
           method: "POST",
 

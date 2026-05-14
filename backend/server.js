@@ -15,7 +15,7 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 
   baseURL:
-    "https://integrate.api.nvidia.com/v1",
+    "https://api.groq.com/openai/v1",
 });
 
 app.post("/parse", async (req, res) => {
@@ -25,7 +25,7 @@ app.post("/parse", async (req, res) => {
     const completion =
       await client.chat.completions.create({
         model:
-          "deepseek-ai/deepseek-v4-flash",
+          "llama-3.3-70b-versatile",
 
         messages: [
           {
