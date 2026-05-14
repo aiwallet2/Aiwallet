@@ -12,8 +12,6 @@ function App() {
   const [parsedData, setParsedData] =
     useState(null);
 
-  const [chains, setChains] = useState([]);
-
   const [showPreview, setShowPreview] =
     useState(false);
 
@@ -51,63 +49,9 @@ function App() {
       setBalance(
         Number(formattedBalance).toFixed(4)
       );
-
-      await detectChains(address);
     } catch (err) {
       console.log(err);
     }
-  }
-
-  async function detectChains(address) {
-    const chainList = [
-      {
-        name: "Ethereum",
-        rpc: "https://eth.llamarpc.com",
-      },
-
-      {
-        name: "Base",
-        rpc: "https://mainnet.base.org",
-      },
-
-      {
-        name: "Arbitrum",
-        rpc: "https://arb1.arbitrum.io/rpc",
-      },
-
-      {
-        name: "BNB",
-        rpc:
-          "https://bsc-dataseed.binance.org",
-      },
-    ];
-
-    const results = [];
-
-    for (const chain of chainList) {
-      try {
-        const provider =
-          new ethers.JsonRpcProvider(
-            chain.rpc
-          );
-
-        const bal =
-          await provider.getBalance(address);
-
-        const formatted = Number(
-          ethers.formatEther(bal)
-        ).toFixed(4);
-
-        results.push({
-          name: chain.name,
-          balance: formatted,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    setChains(results);
   }
 
   async function analyzeTransaction() {
@@ -282,40 +226,6 @@ function App() {
           background: "#0f172a",
           padding: 20,
           borderRadius: 20,
-          marginBottom: 20,
-          border:
-            "1px solid #1e293b",
-        }}
-      >
-        <h3>Detected Chains</h3>
-
-        {chains.map(
-          (chain, index) => (
-            <div
-              key={index}
-              style={{
-                background:
-                  "#1e293b",
-                padding: 14,
-                borderRadius: 12,
-                marginTop: 10,
-              }}
-            >
-              <p>{chain.name}</p>
-
-              <p>
-                {chain.balance} ETH
-              </p>
-            </div>
-          )
-        )}
-      </div>
-
-      <div
-        style={{
-          background: "#0f172a",
-          padding: 20,
-          borderRadius: 20,
           border:
             "1px solid #1e293b",
         }}
@@ -354,7 +264,7 @@ function App() {
               e.target.value
             )
           }
-          placeholder="Send 0.001 ETH to 0x..."
+          placeholder="Send 25 USDT to 0x..."
           style={{
             width: "100%",
             padding: 16,
