@@ -72,9 +72,18 @@ function App() {
         }
       );
 
-} catch {
-  parsed = data.output;
-    }
+      const data =
+        await response.json();
+
+      let parsed;
+
+      try {
+        parsed = JSON.parse(
+          data.output
+        );
+      } catch {
+        parsed = data.output;
+      }
 
       parsed.recommendedChain =
         "Ethereum";
@@ -261,7 +270,7 @@ function App() {
               e.target.value
             )
           }
-          placeholder="Send 25 USDT to 0x..."
+          placeholder="Send 0.01 ETH to 0x..."
           style={{
             width: "100%",
             padding: 16,
