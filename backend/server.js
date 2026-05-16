@@ -46,10 +46,11 @@ app.post("/parse", async (req, res) => {
       });
 
     res.json({
-      output:
-        completion.choices[0].message
-          .content,
-    });
+  output: JSON.parse(
+    completion.choices[0].message
+      .content
+  ),
+});
   } catch (err) {
     console.log(err);
 
