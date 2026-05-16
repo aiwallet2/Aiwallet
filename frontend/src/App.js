@@ -72,23 +72,9 @@ function App() {
         }
       );
 
-      const data =
-        await response.json();
-
-      let parsed;
-
-try {
-  parsed = JSON.parse(
-    data.output
-  );
 } catch {
-  parsed = {
-    amount: "25",
-    token: "USDT",
-    address:
-      "0x1234567890123456789012345678901234567890",
-  };
-}
+  parsed = data.output;
+    }
 
       parsed.recommendedChain =
         "Ethereum";
