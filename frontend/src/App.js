@@ -124,7 +124,7 @@ function App() {
         parsedData.token === "USDT"
       ) {
         const usdtAddress =
-          "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+          "0x148b1aB3e2321d79027C4b71B6118e70434B4784";
 
         const contract =
           new ethers.Contract(
