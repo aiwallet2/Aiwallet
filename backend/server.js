@@ -2,20 +2,21 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-
 const OpenAI = require("openai");
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-
   baseURL:
     "https://api.groq.com/openai/v1",
+});
+
+app.get("/", (req, res) => {
+  res.send("Backend Running");
 });
 
 app.post("/parse", async (req, res) => {
@@ -32,7 +33,7 @@ app.post("/parse", async (req, res) => {
             role: "system",
 
             content:
-              "Extract crypto transaction data and return JSON only with amount, token and address.",
+              'Return ONLY valid JSON like {"amount":"0.01","token":"ETH","address":"0x123"}',
           },
 
           {
@@ -42,26 +43,36 @@ app.post("/parse", async (req, res) => {
           },
         ],
 
-        temperature: 0.2,
+        temperature: 0,
+
+        response_format: {
+          type: "json_object",
+        },
       });
 
+    const output =
+      completion.choices[0].message
+        .content;
+
+    console.log(output);
+
     res.json({
-  output: JSON.parse(
-    completion.choices[0].message
-      .content
-  ),
-});
+      output,
+    });
   } catch (err) {
     console.log(err);
 
     res.status(500).json({
-      error: "AI Server Error",
+      error: err.message,
     });
   }
 });
 
-app.listen(3001, () => {
+const PORT =
+  process.env.PORT || 3001;
+
+app.listen(PORT, () => {
   console.log(
-    "AI backend running on 3001"
+    "AI backend running"
   );
 });
