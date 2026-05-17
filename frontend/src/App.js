@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 
+const USDT_ABI = [
+  "function transfer(address to, uint amount) returns (bool)",
+  "function decimals() view returns (uint8)",
+];
+
 function App() {
   const [prompt, setPrompt] = useState("");
   const [walletAddress, setWalletAddress] =
@@ -115,19 +120,52 @@ function App() {
       const signer =
         await provider.getSigner();
 
-      const tx =
-        await signer.sendTransaction({
-          to: parsedData.address,
+      if (
+        parsedData.token === "USDT"
+      ) {
+        const usdtAddress =
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
-          value: ethers.parseEther(
-            parsedData.amount
-          ),
-        });
+        const contract =
+          new ethers.Contract(
+            usdtAddress,
+            USDT_ABI,
+            signer
+          );
 
-      alert(
-        "Transaction Sent: " +
-          tx.hash
-      );
+        const decimals =
+          await contract.decimals();
+
+        const amount =
+          ethers.parseUnits(
+            parsedData.amount,
+            decimals
+          );
+
+        const tx =
+          await contract.transfer(
+            parsedData.address,
+            amount
+          );
+
+        alert(
+          "USDT Sent: " + tx.hash
+        );
+      } else {
+        const tx =
+          await signer.sendTransaction({
+            to: parsedData.address,
+
+            value:
+              ethers.parseEther(
+                parsedData.amount
+              ),
+          });
+
+        alert(
+          "ETH Sent: " + tx.hash
+        );
+      }
     } catch (err) {
       console.log(err);
 
@@ -270,7 +308,7 @@ function App() {
               e.target.value
             )
           }
-          placeholder="Send 0.01 ETH to 0x..."
+          placeholder="Send 25 USDT to 0x..."
           style={{
             width: "100%",
             padding: 16,
