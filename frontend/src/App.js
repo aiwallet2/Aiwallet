@@ -1,12 +1,24 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 
+import {
+  usePrivy,
+} from "@privy-io/react-auth";
+
 const USDT_ABI = [
   "function transfer(address to, uint amount) returns (bool)",
   "function decimals() view returns (uint8)",
 ];
 
 function App() {
+
+  const {
+  login,
+  logout,
+  authenticated,
+  user,
+} = usePrivy();
+  
   const [prompt, setPrompt] = useState("");
   const [walletAddress, setWalletAddress] =
     useState("");
@@ -284,22 +296,41 @@ function App() {
           Assistant
         </p>
 
-        <button
-          onClick={connectWallet}
-          style={{
-            width: "100%",
-            padding: 16,
-            borderRadius: 14,
-            border: "none",
-            background: "#22c55e",
-            color: "white",
-            fontSize: 16,
-            fontWeight: "bold",
-            marginBottom: 20,
-          }}
-        >
-          Connect Wallet
-        </button>
+        {!authenticated ? (
+  <button
+    onClick={login}
+    style={{
+      width: "100%",
+      padding: 16,
+      borderRadius: 14,
+      border: "none",
+      background: "#22c55e",
+      color: "white",
+      fontSize: 16,
+      fontWeight: "bold",
+      marginBottom: 20,
+    }}
+  >
+    Login Wallet
+  </button>
+) : (
+  <button
+    onClick={logout}
+    style={{
+      width: "100%",
+      padding: 16,
+      borderRadius: 14,
+      border: "none",
+      background: "#ef4444",
+      color: "white",
+      fontSize: 16,
+      fontWeight: "bold",
+      marginBottom: 20,
+    }}
+  >
+    Logout
+  </button>
+)}
 
         <input
           value={prompt}
